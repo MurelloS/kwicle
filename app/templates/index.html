@@ -1,0 +1,133 @@
+{% extends 'components/layout.html' %}
+
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="flex flex-wrap">
+    <!-- <div class="mt-5">
+        <div class="mb-5 md:mb-0 bg-white mr-10 float-left pb-6 w-full overflow-hidden md:max-w-sm rounded-lg shadow-sm">
+            <div class="relative h-40">
+                <img class="absolute h-full w-full object-cover"
+                    src="{{url_for('static', filename='images/background-avatar.jpg')}}">
+            </div>
+            <div class="relative shadow mx-auto h-24 w-24 -my-12 border-white rounded-full overflow-hidden border-4">
+                <img class="object-cover w-full h-full"
+                    src="">
+            </div>
+            <div class="mt-16">
+                <h1 class="text-lg text-center font-semibold">
+                    Name
+                </h1>
+                <p class="text-sm text-gray-600 text-center">
+                    Descr
+                </p>
+            </div>
+            <div class="mt-6 pt-3 flex flex-wrap mx-6 border-t">
+                <div
+                    class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 cursor-default">
+                    Программист
+                </div>
+                <div
+                    class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 cursor-default">
+                    Математик
+                </div>
+                <div
+                    class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600  cursor-default">
+                    Начинающий веб-разработчик
+                </div>
+            </div>
+            <div class="mt-6 pt-3 mx-6 border-t flex justify-between">
+                <a href="" class="hover:text-blue-800"><i class="fab fa-telegram" style="color: #0088cc"></i> Telegram</a>
+                <a href="" class="hover:text-blue-800"><i class="fab fa-vk" style="color: #4c75a3"></i> Vk</a>
+                <a href="" class="hover:text-blue-800"><i class="fab fa-github" style="color: #333"></i> Github</a>
+            </div>
+        </div>
+        <div class="">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab odit nesciunt eos doloremque accusamus itaque, modi voluptates ex sunt iste ut voluptate reiciendis perspiciatis? Amet error optio doloribus magni pariatur.
+            Eius doloribus adipisci ipsam quasi suscipit ratione porro eum eos iste harum tenetur amet, voluptatum distinctio mollitia libero. Nemo excepturi dolorum dignissimos laborum nostrum natus voluptate quis, illum cupiditate eius.
+            Aut pariatur id voluptatibus nemo? Perspiciatis natus adipisci saepe nobis ut maiores mollitia non aspernatur sed quia, itaque accusantium exercitationem modi repudiandae pariatur ad enim inventore nihil alias necessitatibus voluptate.
+            Ipsa numquam rerum officia adipisci aliquam earum dolorem recusandae, temporibus, autem iste enim natus. Laboriosam maiores officia, libero modi sapiente, voluptas unde quo itaque dicta repellendus saepe optio ab dolorem.
+            Quis repudiandae laborum maiores quia architecto et! Nisi officiis facilis modi, atque quis ipsam distinctio? Autem recusandae itaque architecto officiis aut quibusdam at, quis ex molestias asperiores saepe doloribus omnis.
+            Dolores tempore voluptatum delectus earum quia fugiat ad obcaecati alias deserunt sed, nisi nemo eius minus veritatis eaque, id porro laboriosam consequuntur blanditiis modi. Possimus molestiae nesciunt aliquid quasi ex.
+            Aliquam numquam nam reiciendis ipsa dicta nostrum vero. Dicta praesentium labore dolores deserunt quam velit vitae voluptas consequatur atque architecto! Mollitia eum at cum ratione aut numquam nihil, odio voluptatibus.
+            Quo, facilis quod. Harum rem, sunt ullam totam, dicta quaerat eligendi fugit cum corporis excepturi maxime, impedit quam saepe officia dolores quisquam incidunt pariatur blanditiis aliquam velit nostrum? Esse, accusantium.
+            Modi sequi totam accusamus facilis ea impedit magnam quis aperiam qui nemo voluptatum odit at dolores reprehenderit sit, aliquid reiciendis nam pariatur suscipit.
+        </div>
+    </div> -->
+    <div class="mt-4 px-4 bg-white rounded-lg w-full">
+        <div class="py-4 pl-2">
+            <p class="text-lg text-gray-700">
+                Недавние записи
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for article in articles %}
+            <div class="w-full col-span-1 mb-4">
+                <div class="bg-white rounded-lg overflow-hidden shadow relative">
+
+                    {% if not article.image %}
+                    <img class="h-56 w-full object-cover object-center image-cover"
+                        src="{{url_for('static', filename='images/no-img.png')}}" alt="">
+                    {% else %}
+                    <img class="h-56 w-full object-cover object-center" src="{{article.image}}" alt="">
+                    {% endif %}
+                    <div class="p-4 h-auto md:h-40 lg:h-48">
+                        {% if session.get('is_admin') %}
+                        <a href="{{ url_for('admin.edit_page', path=article.path) }}"
+                            class="block text-blue-500 hover:text-blue-600 font-semibold mb-2 text-lg md:text-base lg:text-lg">
+                            {{ article.title }}
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('article', path=article.path) }}"
+                            class="block text-blue-500 hover:text-blue-600 font-semibold mb-2 text-lg md:text-base lg:text-lg">
+                            {{ article.title }}
+                        </a>
+                        {% endif %}
+                        <div class="text-gray-600 text-sm leading-relaxed break-words block md:text-xs lg:text-sm"
+                            style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">
+                            {{ article.description }}
+                        </div>
+                        <div class="relative mt-2 lg:absolute bottom-0 mb-4 md:hidden lg:block">
+                            <span
+                                class="inline bg-gray-300 py-1 px-2 rounded-full text-xs lowercase text-gray-700">{{article.subject}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            No articles found
+            {% endfor %}
+        </div>
+        <div class="flex justify-center mt-4 w-full">
+            <a href="index?page={{page_number-1}}"
+                class="font-medium mx-1 px-3 py-2 bg-gray-200 rounded-lg items-center  {{'pointer-events-none cursor-not-allowed text-gray-500' if page_number == 1 else 'text-gray-700 hover:bg-gray-700 hover:text-gray-200'}}">
+                <span class="mx-1">Назад</span>
+            </a>
+            {% if (page_number - 4) > 0 %}
+            <a href="index?page={{1}}"
+                class="font-medium mx-1 px-3 py-2 bg-gray-200 rounded-lg items-center  {{'pointer-events-none cursor-not-allowed text-gray-500' if page_number == 1 else 'text-gray-700 hover:bg-gray-700 hover:text-gray-200'}}">
+                <span class="mx-1">Первая</span>
+            </a>
+            {%endif %}
+            {% for i in range(-4, 5) %}
+            {% if (page_number + i <= max_page) and (page_number + i > 0)%}
+            <a href="index?page={{page_number + i}}"
+                class="font-medium mx-1 px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 rounded-lg {{'bg-gray-400' if page_number + i == page_number}}">
+                {{page_number + i}}</a>
+            {% endif %}
+            {% endfor %}
+            {% if (page_number + 4) < max_page %}
+            <a href="index?page={{max_page}}"
+                class="font-medium mx-1 px-3 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-700 hover:text-gray-200">
+                Последняя
+            </a>
+            {%endif %}
+            <a href="index?page={{page_number+1}}"
+                class="font-medium mx-1 px-3 py-2 bg-gray-200 rounded-lg {{'pointer-events-none cursor-not-allowed text-gray-500' if page_number + 1 > max_page else 'text-gray-700 hover:bg-gray-700 hover:text-gray-200'}}">
+                Далее
+            </a>
+        </div>
+    </div>
+    <!-- <script src="{{ url_for('static', filename='scripts/index.js') }}"></script> -->
+{% endblock %}

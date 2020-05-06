@@ -1,0 +1,27 @@
+<!doctype html>
+<html class="w-full h-full">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='icons/css/all.min.css') }}">
+    {% block head %}{% endblock %}
+</head>
+
+<body class="w-full h-full flex flex-col min-h-screen">
+    {% include 'components/header.html' %}
+
+    <main class="py-4 container mx-auto flex flex-col flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+    </div>
+</body>
+</div>
+
+</body>
+
+</html>

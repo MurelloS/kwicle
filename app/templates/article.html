@@ -1,0 +1,21 @@
+{% extends 'components/layout.html' %}
+
+{% block title %} {{ page.meta['title'] }} {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/katex.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/github-gist.css') }}">
+<div class="lg:flex lg:flex-row">
+    {% include 'components/sidebar.html' %}
+
+    <div class="mr-3 lg:w-2/3 pl-8">
+        <div id="article" class="markdown" id="article">
+            <h1>{{ page.meta['title'] }}</h1>
+            {{ page.html|safe }}
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='scripts/article.js') }}"></script>
+{% endblock %}

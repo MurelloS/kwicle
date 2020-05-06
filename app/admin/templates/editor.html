@@ -1,0 +1,85 @@
+{% extends 'components/layout.html' %}
+
+{% block title %} Редактирование "{{ title }}" {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/katex.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/github-gist.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/alertify.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
+<main class="py-4 container mx-auto flex flex-col">
+
+  <div id="editor bg-red-100" class="">
+    <div>
+      <div class="toolbar flex flex-wrap ">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0" id="title-edit">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            Заголовок
+          </label>
+          <input autocomplete="off"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="title-input" type="text" placeholder="Какой прекрасный заголовок" value="{{ title }}">
+          <p class="text-red-500 text-xs italic hidden">Это поле обязательно к заполнению</p>
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0" id="subject-edit">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            Тема
+          </label>
+          <input autocomplete="off"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="subject-input" type="text" placeholder="Замечательная тема" value="">
+          <p class="text-red-500 text-xs italic hidden">Это поле обязательно к заполнению</p>
+        </div>
+        <div class="mt-2 w-full flex">
+          <div class="w-full md:w-full px-3 mb-6 md:mb-0" id="image-edit">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Ссылка на обложку
+            </label>
+            <input autocomplete="off"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="image-input" type="text" placeholder="Замечательная ссылка на обложку" value="">
+            <p class="text-red-500 text-xs italic hidden">Проверьте корректно ли введена ссылка на изображение. Серверу не удается её обнаружить!</p>
+          </div>
+        </div>
+        <div class="w-full px-3 mb-6 md:mb-0" id="description-edit">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            Описание
+          </label>
+          <input autocomplete="off"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="description-input" type="text" placeholder="Замечательная тема" value="">
+          <p class="text-red-500 text-xs italic hidden">Это поле обязательно к заполнению</p>
+        </div>
+        <div class="mt-2 flex w-full">
+          <a href="{{ url_for('tutor', path='how_to_use') }}" class="font-light text-blue-500 hover:text-blue-700">Как пользоваться?</a>
+          <a href="{{ url_for('tutor', path='how_to_insert_formula') }}" class="font-light text-blue-500 hover:text-blue-700 ml-2">Как записать формулу?</a>
+          <a href="{{ url_for('tutor', path='how_to_insert_image') }}" class="font-light text-blue-500 hover:text-blue-700 ml-2">Как вставить изображение?</a>
+        </div>
+      </div>
+      
+      <textarea spellcheck="false" class="mt-2 bg-gray-200 w-full border border-gray-400" rows="20" style="height: 50%;" id="textarea">{{body}}</textarea>
+    </div>
+    <div>
+      <div class="lg:flex lg:flex-row">
+        {% include 'components/sidebar.html' %}
+        <div class="mr-3 lg:w-2/3 pl-8">
+          <div class="markdown ml-3">
+            <h1 id="title"></h1>
+            <div class="markdown" id="article">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col items-center justify-center ">
+      <div class="">
+        <button class="bg-red-400 text-white p-2 px-5 rounded {{'hidden' if not title}}" id="delete-article-btn">Удалить</button>
+        <button class="bg-gray-300 p-2 px-3 rounded" id="save-article-btn">Добавить в архив</button>
+        <button class="bg-gray-300 p-2 rounded" id="publish-article-btn">Опубликовать</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="{{ url_for('static', filename='scripts/editor.js') }}"></script>
+{% endblock %}

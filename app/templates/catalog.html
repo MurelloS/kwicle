@@ -1,0 +1,42 @@
+{% extends 'components/layout.html' %}
+
+{% block title %}Каталог статей{% endblock %}
+
+{% block content %}
+
+<div class="lg:flex lg:flex-row">
+    {% include 'components/sidebar.html' %}
+
+    <div class="w-full lg:w-2/3 pl-8 mr-3">
+        <div id="article" class="markdown">
+            {% for subject, articles in catalog.items() %}
+                {% if subject != "Туториал" %}
+                    <h2>{{subject}}</h2>
+                    <div class="">
+                        {% for article in articles %}
+                        <div class = "" >
+                            {% if session.get('is_admin') %}
+                            <a style="font-weight: 400;" class="font-normal block text-blue-600 hover:text-blue-700 truncate"  href="{{ url_for('admin.edit_page', path=article.path) }}">{{article.meta.title}}</a>
+                            {% else %}
+                            <a style="font-weight: 400;" class="font-normal block text-blue-600 hover:text-blue-700 truncate"  href="{{ url_for('article', path=article.path) }}">{{article.meta.title}}</a>
+                            {% endif %}  
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <h2>Несортированное</h2>
+            {% for article in unsorted %}
+            <div class = "" >
+                {% if session.get('is_admin') %}
+                <a style="font-weight: 400;" class="font-normal block text-blue-600 hover:text-blue-700 truncate"  href="{{ url_for('admin.edit_page', path=article.path) }}">{{article.meta.title}}</a>
+                {% else %}
+                <a style="font-weight: 400;" class="font-normal block text-blue-600 hover:text-blue-700 truncate"  href="{{ url_for('article', path=article.path) }}">{{article.meta.title}}</a>
+                {% endif %}  
+            </div>    
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
+{% endblock %}
