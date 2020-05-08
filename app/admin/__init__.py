@@ -47,17 +47,13 @@ def logout():
 @cross_origin()
 @admin_privilege_required
 def create_page():
-    # if 'is_admin' in session:
-    #     if session.get('is_admin'):
-    #         return render_template("editor.html")
-    # return redirect(url_for('index'))
-    return render_template("editor.html")
+    return render_template("editor.html", delete=False)
 
 @admin.route("/editor/<path:path>")
 @admin_privilege_required
 def edit_page(path):
     page = app.pages.get_or_404(path)
-    return render_template("editor.html", title=page.meta['title'], body=page.body)
+    return render_template("editor.html", page=page, delete=True)
 
 @admin.route('/save_article', methods=['POST'])
 @admin_privilege_required
@@ -75,4 +71,4 @@ def delete_article():
     filename = os.path.join(current_app.root_path, 'pages', request.args.get('title') + '.md')
     if os.path.exists(filename):
         os.remove(filename)
-    return jsonify(success=True)
+    return redirect(url_for('index'), code=301)

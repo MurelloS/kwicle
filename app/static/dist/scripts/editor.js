@@ -60978,6 +60978,8 @@ function validateArticle() {
 }
 
 function deleteArticle() {
+  var redirect = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
   if (location.href.split('/').length > 5) {
     var currentLocation = location.href.substring(location.href.lastIndexOf('/') + 1);
     fetch("/admin/delete_article?title=".concat(currentLocation), {
@@ -60987,7 +60989,9 @@ function deleteArticle() {
         'Content-type': 'text/plain; charset=UTF-8'
       }
     }).then(function (response) {
-      console.log('deleted');
+      if (response.redirected && redirect) {
+        window.location.href = response.url;
+      }
     });
   }
 }
@@ -61027,8 +61031,6 @@ function saveArticle(isPublish) {
       'Content-type': 'text/plain; charset=UTF-8'
     }
   }).then(function (response) {
-    console.log('sent');
-
     if (response.redirected) {
       window.location.href = response.url;
     }
@@ -61041,8 +61043,7 @@ window.onload = function () {
   document.getElementById("delete-article-btn").addEventListener('click', function () {
     if (validateArticle()) {
       _alertifyjs.default.confirm('Удаление', 'Вы уверены, что хотите удалить статью?', function () {
-        deleteArticle();
-        window.location.href = "/";
+        deleteArticle(true);
       }, function () {});
     }
   });
@@ -61089,7 +61090,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65191" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52551" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
