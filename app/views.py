@@ -59,3 +59,9 @@ def article(path):
 def tutor(path):
     page = pages.get_or_404(path)
     return render_template("article.html", page=page)
+
+@app.route("/.well-known/acme-challenge/TGy9o84drNjLkUxgmFLnyOw8g56756uPUCW0gJJSZig")
+def ssl():
+    return "TGy9o84drNjLkUxgmFLnyOw8g56756uPUCW0gJJSZig.2hWwTKTUhLGH7g6SzX2r8c6aJRZcKVHoHOhurCR00aU"
+
+
