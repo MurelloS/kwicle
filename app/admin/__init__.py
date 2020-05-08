@@ -47,10 +47,11 @@ def logout():
 @cross_origin()
 @admin_privilege_required
 def create_page():
-    if 'is_admin' in session:
-        if session.get('is_admin'):
-            return render_template("editor.html")
-    return redirect(url_for('index'))
+    # if 'is_admin' in session:
+    #     if session.get('is_admin'):
+    #         return render_template("editor.html")
+    # return redirect(url_for('index'))
+    return render_template("editor.html")
 
 @admin.route("/editor/<path:path>")
 @admin_privilege_required
