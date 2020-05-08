@@ -60980,17 +60980,15 @@ function validateArticle() {
 function deleteArticle() {
   if (location.href.split('/').length > 5) {
     var currentLocation = location.href.substring(location.href.lastIndexOf('/') + 1);
-
-    if (currentLocation != "editor") {
-      // поменяй на уровень вложенности
-      fetch("/admin/delete_article?title=".concat(currentLocation), {
-        method: 'POST',
-        headers: {
-          'Accept': 'text/plain',
-          'Content-type': 'text/plain; charset=UTF-8'
-        }
-      });
-    }
+    fetch("/admin/delete_article?title=".concat(currentLocation), {
+      method: 'POST',
+      headers: {
+        'Accept': 'text/plain',
+        'Content-type': 'text/plain; charset=UTF-8'
+      }
+    }).then(function (response) {
+      console.log('deleted');
+    });
   }
 }
 
@@ -61028,12 +61026,13 @@ function saveArticle(isPublish) {
       'Accept': 'text/plain',
       'Content-type': 'text/plain; charset=UTF-8'
     }
+  }).then(function (response) {
+    console.log('sent');
+
+    if (response.redirected) {
+      window.location.href = response.url;
+    }
   });
-  localStorage.setItem('articleHTML', '');
-  localStorage.setItem('articleMD', '');
-  localStorage.setItem('subjectInput', '');
-  localStorage.setItem('titleInput', '');
-  window.location.href = "/".concat(titleUrl);
 }
 
 window.onload = function () {
@@ -61090,7 +61089,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50824" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65191" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

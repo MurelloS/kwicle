@@ -4,17 +4,18 @@ from flask import render_template
 from flask import g, session
 from flask import request, make_response, redirect, url_for
 from flask import current_app
+from flask_cors import cross_origin
+from functools import wraps
 from app.config import get_admin_authorization_data
 import app
-from functools import wraps
+
 admin = Blueprint("admin", __name__, template_folder="templates")
 
 def admin_privilege_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('is_admin'):
-            # return redirect(url_for('admin.auth', next=request.url))
-            return "https://youtu.be/rtizjDbvIRU?t=24"
+            return redirect(url_for('admin.auth', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -35,16 +36,21 @@ def auth():
 
 
 @admin.route('/logout', methods=['GET', 'POST'])
-@admin_privilege_required
 def logout():
-    session['is_admin'] = False
+    if 'is_admin' in session:
+        if session['is_admin']:
+            session['is_admin'] = False
     return redirect(url_for('index'))
 
 
 @admin.route("/editor")
+@cross_origin()
 @admin_privilege_required
 def create_page():
-    return render_template("editor.html")
+    if 'is_admin' in session:
+        if session.get('is_admin'):
+            return render_template("editor.html")
+    return redirect(url_for('index'))
 
 @admin.route("/editor/<path:path>")
 @admin_privilege_required
@@ -54,16 +60,18 @@ def edit_page(path):
 
 @admin.route('/save_article', methods=['POST'])
 @admin_privilege_required
+@cross_origin()
 def save_article():
     filename = request.args.get('title') + '.md'
     with open(os.path.join(current_app.root_path, 'pages', filename), 'w', encoding="utf-8") as file:
         file.write(request.get_data().decode("utf-8"))
-    return "i hope you are admin..."
+    return redirect(url_for('article', path=request.args.get('title')), code=301)
 
 @admin.route('/delete_article', methods=['POST'])
 @admin_privilege_required
+@cross_origin()
 def delete_article():
     filename = os.path.join(current_app.root_path, 'pages', request.args.get('title') + '.md')
     if os.path.exists(filename):
         os.remove(filename)
-    return "fuck you"
+    return jsonify(success=True)
